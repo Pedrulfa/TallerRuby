@@ -1,13 +1,6 @@
-require 'rake'
-require 'rake/testtask'
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-# Define a Rake task for running tests
-Rake::TestTask.new do |t|
-  t.libs << 'test'
-  t.pattern = 'spec/**/*_spec.rb'
-end
+require_relative "config/application"
 
-# Define a default task
-task default: :test
-
-# Additional tasks can be defined here as needed
+Rails.application.load_tasks
