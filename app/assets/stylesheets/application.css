@@ -8,3 +8,95 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+
+
+/* fuente */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Audiowide&display=swap');
+
+/* Estilos generales  */
+body {
+  background-color: rgba(15, 15, 25, 0.9);
+  min-height: 100vh;
+  font-family: 'Orbitron', sans-serif;
+  color: #d1d5db;
+}
+
+/* Patrón de fondo tipo vinilo */
+.vinyl-pattern {
+  background-color: rgb(15, 15, 25);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Contenido principal con fondo oscuro */
+.main-content {
+  background-color: transparent;
+  border-radius: 0.5rem;
+  min-height: calc(100vh - 10rem);
+}
+
+/* Navegación estilo retro */
+nav.retro-nav {
+  background: linear-gradient(to right, #1a1a2e, #16213e, #1a1a2e);
+  border-bottom: 2px solid #374151;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo con gradiente animado */
+.retro-logo {
+  font-family: 'Audiowide', cursive;
+  font-size: 1.875rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  background: linear-gradient(to right, #7c3aed, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.retro-logo:hover {
+  background: linear-gradient(to right, #8b5cf6, #7c3aed, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Botones estilo neón */
+.btn-neon-pink {
+  background: linear-gradient(to right, #6b21a8, #7c3aed);
+  border: 1px solid #8b5cf6;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-neon-pink:hover {
+  background: linear-gradient(to right, #7c3aed, #8b5cf6);
+  box-shadow: 0 3px 12px rgba(139, 92, 246, 0.4);
+  transform: scale(1.05);
+}
+
+.btn-neon-cyan {
+  background: linear-gradient(to right, #1e3a8a, #2563eb);
+  border: 1px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-neon-cyan:hover {
+  background: linear-gradient(to right, #2563eb, #3b82f6);
+  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.4);
+  transform: scale(1.05);
+}
