@@ -1,0 +1,37 @@
+<div class="form-container">
+  <h1 class="form-title">Iniciar Sesión</h1>
+
+  <% if flash[:alert].present? %>
+    <div class="form-errors" style="margin-bottom: 1.5rem;">
+      <h3 class="error-title">Error al iniciar sesión</h3>
+      <ul class="error-list">
+        <li><%= flash[:alert] %></li>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with url: login_path, local: true, class: "user-form", data: { turbo: false } do |form| %>
+    
+    <div class="form-group">
+      <%= form.label :email, "Email", class: "form-label" %>
+      <%= form.email_field :email, class: "form-input", placeholder: "tu@email.com", autofocus: true, value: params[:email] %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :password, "Contraseña", class: "form-label" %>
+      <%= form.password_field :password, class: "form-input", placeholder: "Ingresa tu contraseña" %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Iniciar Sesión", class: "form-submit" %>
+    </div>
+    
+  <% end %>
+
+  <div style="text-align: center; margin-top: 1.5rem;">
+    <p style="color: #9ca3af; font-size: 0.875rem;">
+      ¿No tienes una cuenta? 
+      <%= link_to "Regístrate aquí", new_user_path, style: "color: #8b5cf6; text-decoration: none; font-weight: bold;" %>
+    </p>
+  </div>
+</div>
