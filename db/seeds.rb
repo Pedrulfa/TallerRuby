@@ -13,3 +13,13 @@
 ["ADMIN", "GERENTE", "EMPLEADO", "CLIENTE"].each do |role_name|
   Role.find_or_create_by!(name: role_name)
 end
+
+# Crear un usuario admin
+admin_role = Role.find_by(name: "ADMIN")
+
+User.find_or_create_by!(email: "admin@gmail.com") do |u|
+  u.name = "Admin"
+  u.surname = "Admin"
+  u.password = "Admin"     
+  u.role_id = admin_role.id
+end
