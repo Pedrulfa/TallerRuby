@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_17_184713) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_17_191605) do
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -86,8 +86,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_184713) do
     t.string "email"
     t.string "name"
     t.string "password_digest"
+    t.integer "role_id"
     t.string "surname"
     t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "audios", "used_products"
@@ -96,4 +98,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_184713) do
   add_foreign_key "sale_products", "products"
   add_foreign_key "sale_products", "sales"
   add_foreign_key "used_products", "products"
+  add_foreign_key "users", "roles"
 end
