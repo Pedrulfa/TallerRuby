@@ -1,0 +1,47 @@
+<div class="form-container">
+  <h1 class="form-title">Registro de Usuario</h1>
+
+  <%= form_with model: @user, local: true, class: "user-form" do |f| %>
+    
+    <div class="form-group">
+      <%= f.label :name, "Nombre", class: "form-label" %>
+      <%= f.text_field :name, class: "form-input", placeholder: "Ingresa tu nombre" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :surname, "Apellido", class: "form-label" %>
+      <%= f.text_field :surname, class: "form-input", placeholder: "Ingresa tu apellido" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :email, "Email", class: "form-label" %>
+      <%= f.email_field :email, class: "form-input", placeholder: "tu@email.com" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password, "Contraseña", class: "form-label" %>
+      <%= f.password_field :password, class: "form-input", placeholder: "Mínimo 6 caracteres" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password_confirmation, "Confirmar Contraseña", class: "form-label" %>
+      <%= f.password_field :password_confirmation, class: "form-input", placeholder: "Repite tu contraseña" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Registrarse", class: "form-submit" %>
+    </div>
+
+  <% end %>
+
+  <% if @user.errors.any? %>
+    <div class="form-errors">
+      <h3 class="error-title">Se encontraron <%= @user.errors.count %> errores:</h3>
+      <ul class="error-list">
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
