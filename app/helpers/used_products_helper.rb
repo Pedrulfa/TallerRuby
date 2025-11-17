@@ -1,0 +1,2 @@
+module UsedProductsHelper
+end
