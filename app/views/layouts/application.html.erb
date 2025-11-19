@@ -28,7 +28,7 @@
             <span class="text-gray-300" style="padding: 0.5rem 1rem; display: flex; align-items: center;">
               Hola, <%= current_user.name %>
             </span>
-            <%= link_to "Sign Out", logout_path, method: :delete, data: { turbo_method: :delete }, class: "btn-neon-pink" %>
+            <%= link_to "Sign Out", logout_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "¿Estás seguro que quieres cerrar sesión?" }, class: "btn-neon-pink" %>
           <% else %>
             <%= link_to "Login", login_path, class: "btn-neon-pink" %>
             <%= link_to "Sign Up", new_user_path, class: "btn-neon-cyan" %>
@@ -38,7 +38,27 @@
       </div>
     </nav>
 
-    <main class="main-content mx-auto mt-28 px-5 py-8" style="max-width: 1280px;">
+    <% if logged_in? %>
+      <aside class="sidebar-nav">
+        <div class="sidebar-content">
+          <h3 class="sidebar-title">Menú</h3>
+          <ul class="sidebar-menu">
+            <li>
+              <%= link_to "#", class: "sidebar-link" do %>
+                👤 <span>Mi Perfil</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to "#", class: "sidebar-link" do %>
+                🎵 <span>Productos</span>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    <% end %>
+
+    <main class="<%= logged_in? ? 'main-content-with-sidebar' : 'main-content' %> mx-auto mt-28 px-5 py-8" style="max-width: 1280px;">
       <%= yield %>
     </main>
   </body>

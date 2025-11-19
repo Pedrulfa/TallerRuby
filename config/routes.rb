@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   # Para gestionar usuarios
-  resources :users, only: [:new, :create]
+  get '/users/new', to: 'users#new',    as: :new_user
+  post '/users',    to: 'users#create', as: :users
 
   # Para iniciar sesión
   get    '/login',  to: 'sessions#new'
