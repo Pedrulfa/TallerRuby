@@ -1,0 +1,30 @@
+<div class="form-container" style="max-width: 600px;">
+  <h1 class="form-title">Mi Perfil</h1>
+
+  <div class="profile-info">
+    <div class="profile-field">
+      <label class="profile-label">Nombre</label>
+      <p class="profile-value"><%= @user.name %></p>
+    </div>
+
+    <div class="profile-field">
+      <label class="profile-label">Apellido</label>
+      <p class="profile-value"><%= @user.surname %></p>
+    </div>
+
+    <div class="profile-field">
+      <label class="profile-label">Email</label>
+      <p class="profile-value"><%= @user.email %></p>
+    </div>
+
+    <div class="profile-field">
+      <label class="profile-label">Rol</label>
+      <p class="profile-value"><%= @user.role.name.capitalize %></p>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+      <%= link_to "Editar Perfil", edit_user_path(@user), class: "form-submit" %>
+      <%= link_to "Volver", root_path, class: "btn-cancel" %>
+    </div>
+  </div>
+</div>
