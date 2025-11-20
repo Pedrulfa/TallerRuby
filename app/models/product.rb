@@ -1,10 +1,29 @@
 class Product < ApplicationRecord
-  has_many :images, dependent: :destroy # tiene muchas imagenes, y si se el producto borra, borra tambien las imagenes
-  has_one :audio, dependent: :destroy # tiene un solo audio y se borra como el de arriba
+  has_many :images, dependent: :destroy
+  self.inheritance_column = nil
 
-  validates :name, :price, :stock, presence: true # valida el nombre precio y stock, el presence no permite guardarlo si le falta alguno de esos
+  has_one :new_product, dependent: :destroy
+  has_one :used_product, dependent: :destroy
+
+  validates :name, :price, :author, presence: true
+
+  ransacker :name_sin_acentos do
+    Arel.sql("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')")
+  end
+
+  ransacker :author_sin_acentos do
+    Arel.sql("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(author), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')")
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    [ "author", "category", "description", "id", "name", "price", "type", "created_at", "name_sin_acentos", "author_sin_acentos" ]
+  end
 
   def cover_image
-    images.find_by(cover: true) || images.first # si tiene portada la pone como portada, sino usa la que tiene.
+    images.first
+  end
+
+  def current_stock
+    new_product&.stock || 1
   end
 end

@@ -1,14 +1,14 @@
 <div class="search-bar">
   <%= search_form_for @q do |f| %>
   
-    <%= f.label :name_cont, "Título" %>
-    <%= f.search_field :name_cont %>
+    <%= f.label :name_sin_acentos_cont, "Título" %>
+    <%= f.search_field :name_sin_acentos_cont %>
 
-    <%= f.label :author_cont, "Artista" %>
-    <%= f.search_field :author_cont %>
+    <%= f.label :author_sin_acentos_cont, "Artista" %>
+    <%= f.search_field :author_sin_acentos_cont %>
 
-    <%= f.label :category_cont, "Género/Categoría" %>
-    <%= f.search_field :category_cont %>
+    <%= f.label :category_i_cont, "Género/Categoría" %>
+    <%= f.search_field :category_i_cont %>
 
     <%= f.label :type_eq, "Tipo" %>
     <%= f.select :type_eq, [['Vinilo', 'Vinilo'], ['CD', 'CD']], include_blank: 'Todos' %>
