@@ -1,8 +1,17 @@
 class UsersController < ApplicationController
   
-  before_action :require_login, only: [:show, :edit, :update]
-  
+  before_action :require_login, only: [:show, :edit, :update, :index, :update_role]
   before_action :set_user, only: [:edit, :update]
+  
+  # Verificar permiso para gestionar usuarios
+  before_action only: [:index, :update_role] do
+    authorize_permission!("modify_role")
+  end
+
+  # Listado de usuarios (solo para quien tenga permiso modify_role)
+  def index
+    @users = User.includes(:role).all
+  end
 
   def new
     @user = User.new
@@ -39,6 +48,23 @@ class UsersController < ApplicationController
       redirect_to profile_path, notice: "Perfil actualizado exitosamente"
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  # Nueva acción para modificar el rol de un usuario
+  def update_role
+    @user = User.find(params[:id])
+    
+    # Validar que no se intente modificar el rol de un ADMIN
+    if @user.role.name == "ADMIN"
+      redirect_to users_path, alert: "No se puede modificar el rol de un administrador"
+      return
+    end
+    
+    if @user.update(role_id: params[:role_id])
+      redirect_to users_path, notice: "Rol actualizado correctamente"
+    else
+      redirect_to users_path, alert: "Error al actualizar el rol"
     end
   end
 

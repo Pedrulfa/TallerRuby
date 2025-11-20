@@ -8,4 +8,17 @@ class User < ApplicationRecord
                          allow_blank: true
     validates :name, presence: { message: "No puede estar vacío" }
     validates :surname, presence: { message: "No puede estar vacío" }
+
+    # Sistema de permisos
+    # Verifica si el usuario tiene un permiso específico
+    def can?(permission_name)
+      return false unless role.present?
+      
+      # Busca el permiso por nombre
+      permission = Permission.find_by(name: permission_name)
+      return false unless permission.present?
+      
+      # Verifica si existe la relación en has_permissions
+      HasPermission.exists?(role_id: role.id, permission_id: permission.id)
+    end
 end

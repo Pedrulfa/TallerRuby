@@ -1,0 +1,56 @@
+<% content_for :title, "Gestión de Usuarios" %>
+
+<div class="container-main">
+  <div class="page-header">
+    <h1 class="page-title">👥 Gestión de Usuarios</h1>
+    <p class="page-subtitle">Administrar roles de los usuarios del sistema</p>
+  </div>
+
+  <div class="users-table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol Actual</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= "#{user.name} #{user.surname}" %></td>
+            <td><%= user.email %></td>
+            <td>
+              <span class="role-badge role-<%= user.role.name.downcase %>">
+                <%= user.role.name %>
+              </span>
+            </td>
+            <td>
+              <%# No permitir modificar el rol de otros ADMIN %>
+              <% if user.role.name == "ADMIN" %>
+                <span class="text-gray-400 text-sm">
+                  🔒 No modificable
+                </span>
+              <% else %>
+                <%= form_with url: update_user_role_path(user), method: :patch, local: true, class: "role-form" do |f| %>
+                  <%= f.select :role_id, 
+                      Role.all.map { |r| [r.name, r.id] }, 
+                      { selected: user.role_id },
+                      class: "role-select" %>
+                  <%= f.submit "Actualizar Rol", class: "btn-update-role" %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6">
+    <%= link_to "← Volver al Inicio", root_path, class: "btn-secondary" %>
+  </div>
+</div>

@@ -53,6 +53,15 @@
                 🎵 <span>Productos</span>
               <% end %>
             </li>
+            
+            <%# Solo mostrar Gestión de Usuarios si tiene el permiso modify_role %>
+            <% if can?("modify_role") %>
+              <li>
+                <%= link_to users_list_path, class: "sidebar-link" do %>
+                  👥 <span>Gestión de Usuarios</span>
+                <% end %>
+              </li>
+            <% end %>
           </ul>
         </div>
       </aside>
