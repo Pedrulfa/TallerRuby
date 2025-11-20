@@ -1,0 +1,38 @@
+<div class="search-bar">
+  <%= search_form_for @q do |f| %>
+  
+    <%= f.label :name_cont, "Título" %>
+    <%= f.search_field :name_cont %>
+
+    <%= f.label :author_cont, "Artista" %>
+    <%= f.search_field :author_cont %>
+
+    <%= f.label :category_cont, "Género/Categoría" %>
+    <%= f.search_field :category_cont %>
+
+    <%= f.label :type_eq, "Tipo" %>
+    <%= f.select :type_eq, [['Vinilo', 'Vinilo'], ['CD', 'CD']], include_blank: 'Todos' %>
+
+    <%= f.submit "Buscar" %>
+  <% end %>
+</div>
+
+<div class="products-grid">
+  <% @products.each do |product| %>
+    <div class="product-card">
+      <% if product.cover_image %>
+        <%= image_tag product.cover_image.url %> 
+      <% end %>
+      
+      <h3><%= product.name %></h3>
+      <h4><%= product.author %></h4>
+      <p>Precio: $<%= product.price %></p>
+      
+      <p>Stock: <%= product.current_stock %></p>
+
+      <%= link_to "Ver Detalle", product_path(product) %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @products %>

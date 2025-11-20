@@ -1,0 +1,42 @@
+<div class="product-detail-container">
+  <h1><%= @product.name %></h1>
+  <h3>Por <%= @product.author %></h3>
+  <p class="category">Categoría: <%= @product.category %> | Tipo: <%= @product.type %></p>
+
+  <div class="product-images">
+    <% if @product.images.any? %>
+      <div class="main-image">
+        <%= image_tag @product.images.first.url, style: "max-width: 400px;" %>
+      </div>
+      <div class="thumbnails">
+        <% @product.images.each do |img| %>
+          <%= image_tag img.url, style: "max-width: 100px;" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="product-info">
+    <p class="description"><strong>Descripción:</strong> <%= @product.description %></p>
+    <h2 class="price">Precio: $<%= @product.price %></h2>
+    <p class="stock">Stock disponible: <%= @product.current_stock %></p>
+  </div>
+
+  <hr>
+
+  <div class="related-products">
+    <h3>Tal vez también te interese...</h3>
+    <div class="products-grid">
+      <% @related_products.each do |related| %>
+        <div class="product-card-mini">
+          <strong><%= link_to related.name, product_path(related) %></strong>
+          <br>
+          <small><%= related.author %></small>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <br>
+  <%= link_to "Volver al catálogo", products_path %>
+</div>
