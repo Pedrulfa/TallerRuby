@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_17_192203) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_20_195820) do
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
     t.integer "used_product_id", null: false
     t.index ["used_product_id"], name: "index_audios_on_used_product_id"
+  end
+
+  create_table "has_permissions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "permission_id", null: false
+    t.integer "role_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_has_permissions_on_permission_id"
+    t.index ["role_id"], name: "index_has_permissions_on_role_id"
   end
 
   create_table "images", force: :cascade do |t|
@@ -33,6 +42,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_192203) do
     t.integer "stock"
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_new_products_on_product_id"
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "products", force: :cascade do |t|
@@ -93,6 +108,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_17_192203) do
   end
 
   add_foreign_key "audios", "used_products"
+  add_foreign_key "has_permissions", "permissions"
+  add_foreign_key "has_permissions", "roles"
   add_foreign_key "images", "products"
   add_foreign_key "new_products", "products"
   add_foreign_key "sale_products", "products"

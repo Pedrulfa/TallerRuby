@@ -35,7 +35,7 @@ end
 admin_role = Role.find_by(name: "ADMIN")
 modify_role_permission = Permission.find_by(name: "modify_role")
 
-RolePermission.find_or_create_by!(role: admin_role, permission: modify_role_permission)
+HasPermission.find_or_create_by!(role_id: admin_role.id, permission_id: modify_role_permission.id)
 
 
 
