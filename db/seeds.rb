@@ -20,9 +20,24 @@ admin_role = Role.find_by(name: "ADMIN")
 User.find_or_create_by!(email: "admin@gmail.com") do |u|
   u.name = "Admin"
   u.surname = "Admin"
-  u.password = "Admin123"
+  u.password = "Admin"
   u.role_id = admin_role.id
 end
+
+
+
+#Crear permisos
+["modify_role"].each do |perm_name|
+  Permission.find_or_create_by!(name: perm_name)
+end
+
+#Asignar permisos a roles
+admin_role = Role.find_by(name: "ADMIN")
+modify_role_permission = Permission.find_by(name: "modify_role")
+
+RolePermission.find_or_create_by!(role: admin_role, permission: modify_role_permission)
+
+
 
 puts "Creando productos de prueba..."
 
