@@ -318,3 +318,69 @@ nav.retro-nav {
   left: 0;
   color: #ef4444;
 }
+
+/* Sidebar Extra Content */
+.sidebar-extra {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* Profile Styles */
+.profile-info {
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f0f19 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-field {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.profile-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a78bfa;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-value {
+  display: block;
+  font-size: 1.125rem;
+  color: #e5e7eb;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+}
+
+.btn-cancel {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  border: 2px solid #6b7280;
+  border-radius: 0.5rem;
+  color: #9ca3af;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  border-color: #9ca3af;
+  color: #e5e7eb;
+  background-color: rgba(107, 114, 128, 0.1);
+  transform: translateY(-2px);
+}
