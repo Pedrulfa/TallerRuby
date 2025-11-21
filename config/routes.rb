@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # --- TU PARTE (STOREFRONT) ---
-  resources :products, only: [:index, :show, :new, :create]
+  resources :products, only: [:index, :show]
   root "products#index"
   # -----------------------------
 
@@ -24,4 +24,10 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   get '/profile', to: 'users#show', as: :profile
+
+  #BACKSTORE
+  namespace :backstore do
+    resources :products
+    root "products#index"
+  end
 end
