@@ -1,0 +1,119 @@
+<div class="container-main">
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 class="page-title">Gestión de Productos</h1>
+    <%= link_to "Nuevo Producto", new_backstore_product_path, class: "btn-neon-pink" %>
+  </div>
+
+  <div class="search-bar" style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+    <%= search_form_for @q, url: backstore_products_path, method: :get do |f| %>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+        <div>
+          <%= f.label :name_sin_acentos_cont, "Nombre del Disco", class: "form-label" %>
+          <%= f.search_field :name_sin_acentos_cont, class: "form-input", placeholder: "Buscar por nombre..." %>
+        </div>
+
+        <div>
+          <%= f.label :author_sin_acentos_cont, "Artista", class: "form-label" %>
+          <%= f.search_field :author_sin_acentos_cont, class: "form-input", placeholder: "Buscar por artista..." %>
+        </div>
+
+        <div>
+          <%= f.label :type_eq, "Formato", class: "form-label" %>
+          <%= f.select :type_eq, [['Vinilo', 'Vinilo'], ['CD', 'CD']], { include_blank: 'Todos' }, class: "form-input" %>
+        </div>
+
+        <div>
+          <%= f.submit "Buscar", class: "btn-neon-pink", style: "margin: 0;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="users-table-container" style="background: rgba(255,255,255,0.05); border-radius: 0.5rem; overflow: hidden;">
+    <table class="users-table" style="width: 100%; border-collapse: collapse;">
+      <thead style="background: rgba(139, 92, 246, 0.2);">
+        <tr>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">ID</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Portada</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Nombre</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Artista</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Tipo</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Precio</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Stock</th>
+          <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Estado</th>
+          <th style="padding: 1rem; text-align: center; color: #a78bfa; font-weight: 600;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <td style="padding: 1rem; color: #d1d5db;"><%= product.id %></td>
+            <td style="padding: 1rem;">
+              <% if product.cover_image %>
+                <%= image_tag product.cover_image.url, style: "width: 50px; height: 50px; object-fit: cover; border-radius: 0.25rem; border: 2px solid #8b5cf6;" %>
+              <% else %>
+                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.75rem;">
+                  Sin img
+                </div>
+              <% end %>
+            </td>
+            <td style="padding: 1rem; color: #e5e7eb; font-weight: 500;"><%= product.name %></td>
+            <td style="padding: 1rem; color: #d1d5db;"><%= product.author %></td>
+            <td style="padding: 1rem;">
+              <span style="padding: 0.25rem 0.75rem; background: <%= product.type == 'Vinilo' ? '#8b5cf6' : '#ec4899' %>; color: white; border-radius: 9999px; font-size: 0.85rem; font-weight: 500;">
+                <%= product.type %>
+              </span>
+            </td>
+            <td style="padding: 1rem; color: #10b981; font-weight: 600;">$<%= number_with_delimiter(product.price.to_i) %></td>
+            <td style="padding: 1rem;">
+              <% if product.new_product %>
+                <span style="color: #10b981; font-weight: 500;"><%= product.new_product.stock %> unidades</span>
+              <% else %>
+                <span style="color: #f59e0b; font-weight: 500;">Pieza única</span>
+              <% end %>
+            </td>
+            <td style="padding: 1rem;">
+              <% if product.new_product %>
+                <span style="padding: 0.25rem 0.75rem; background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; border-radius: 0.25rem; font-size: 0.85rem; font-weight: 600;">
+                  NUEVO
+                </span>
+              <% else %>
+                <span style="padding: 0.25rem 0.75rem; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; border-radius: 0.25rem; font-size: 0.85rem; font-weight: 600;">
+                  USADO
+                </span>
+              <% end %>
+            </td>
+            <td style="padding: 1rem;">
+              <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                <%= link_to "Editar", edit_backstore_product_path(product), 
+                    class: "btn-update-role", 
+                    style: "padding: 0.5rem 0.75rem; background: #8b5cf6; color: white; border-radius: 0.375rem; text-decoration: none; font-size: 0.9rem; transition: all 0.3s;",
+                    title: "Editar producto" %>
+                <%= button_to "Eliminar", backstore_product_path(product), 
+                    method: :delete, 
+                    data: { turbo_confirm: "¿Estás seguro de eliminar '#{product.name}'?" },
+                    style: "padding: 0.5rem 0.75rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem; transition: all 0.3s;",
+                    title: "Eliminar producto" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @products.empty? %>
+    <div style="text-align: center; padding: 3rem; color: #9ca3af;">
+      <p style="font-size: 1.25rem; margin-bottom: 1rem;">No se encontraron productos</p>
+      <p>Intenta ajustar los filtros de búsqueda o crea un nuevo producto.</p>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 2rem; display: flex; justify-content: center;">
+    <%= paginate @products %>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <%= link_to "← Volver al Storefront", root_path, class: "btn-cancel", style: "display: inline-block; text-align: center;" %>
+  </div>
+</div>
