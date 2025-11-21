@@ -1,7 +1,15 @@
 <div class="container-main">
   <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
     <h1 class="page-title">Gestión de Productos</h1>
-    <%= link_to "Nuevo Producto", new_backstore_product_path, class: "btn-neon-pink" %>
+    <div style="display: flex; gap: 1rem;">
+      <%= link_to "Productos Activos", backstore_products_path(scope: 'active'), 
+          class: "btn-secondary", 
+          style: "background: #{params[:scope] != 'inactive' ? '#8b5cf6' : 'rgba(255,255,255,0.1)'}; padding: 0.5rem 1rem; border-radius: 0.375rem; color: white; text-decoration: none;" %>
+      <%= link_to "Productos Dados de Baja", backstore_products_path(scope: 'inactive'), 
+          class: "btn-secondary", 
+          style: "background: #{params[:scope] == 'inactive' ? '#8b5cf6' : 'rgba(255,255,255,0.1)'}; padding: 0.5rem 1rem; border-radius: 0.375rem; color: white; text-decoration: none;" %>
+      <%= link_to "Nuevo Producto", new_backstore_product_path, class: "btn-neon-pink" %>
+    </div>
   </div>
 
   <div class="search-bar" style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
@@ -41,6 +49,9 @@
           <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Precio</th>
           <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Stock</th>
           <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Estado</th>
+          <% if params[:scope] == 'inactive' %>
+            <th style="padding: 1rem; text-align: left; color: #a78bfa; font-weight: 600;">Fecha de Baja</th>
+          <% end %>
           <th style="padding: 1rem; text-align: center; color: #a78bfa; font-weight: 600;">Acciones</th>
         </tr>
       </thead>
@@ -83,17 +94,26 @@
                 </span>
               <% end %>
             </td>
+            <% if params[:scope] == 'inactive' %>
+              <td style="padding: 1rem; color: #ef4444; font-weight: 500;">
+                <%= product.date_removed ? product.date_removed.strftime("%d/%m/%Y %H:%M") : '-' %>
+              </td>
+            <% end %>
             <td style="padding: 1rem;">
               <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                <%= link_to "Editar", edit_backstore_product_path(product), 
-                    class: "btn-update-role", 
-                    style: "padding: 0.5rem 0.75rem; background: #8b5cf6; color: white; border-radius: 0.375rem; text-decoration: none; font-size: 0.9rem; transition: all 0.3s;",
-                    title: "Editar producto" %>
-                <%= button_to "Eliminar", backstore_product_path(product), 
-                    method: :delete, 
-                    data: { turbo_confirm: "¿Estás seguro de eliminar '#{product.name}'?" },
-                    style: "padding: 0.5rem 0.75rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem; transition: all 0.3s;",
-                    title: "Eliminar producto" %>
+                <% if params[:scope] != 'inactive' %>
+                  <%= link_to "Editar", edit_backstore_product_path(product), 
+                      class: "btn-update-role", 
+                      style: "padding: 0.5rem 0.75rem; background: #8b5cf6; color: white; border-radius: 0.375rem; text-decoration: none; font-size: 0.9rem; transition: all 0.3s;",
+                      title: "Editar producto" %>
+                  <%= button_to "Eliminar", backstore_product_path(product), 
+                      method: :delete, 
+                      data: { turbo_confirm: "¿Estás seguro de dar de baja '#{product.name}'? #{product.new_product ? 'El stock se pondrá en 0.' : ''}" },
+                      style: "padding: 0.5rem 0.75rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem; transition: all 0.3s;",
+                      title: "Dar de baja producto" %>
+                <% else %>
+                  <span style="color: #9ca3af; font-size: 0.9rem;">Producto dado de baja</span>
+                <% end %>
               </div>
             </td>
           </tr>
