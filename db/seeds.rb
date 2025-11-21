@@ -20,7 +20,7 @@ admin_role = Role.find_by(name: "ADMIN")
 User.find_or_create_by!(email: "admin@gmail.com") do |u|
   u.name = "Admin"
   u.surname = "Admin"
-  u.password = "Admin"
+  u.password = "Admin123"
   u.role_id = admin_role.id
 end
 

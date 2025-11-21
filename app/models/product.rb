@@ -7,6 +7,9 @@ class Product < ApplicationRecord
 
   validates :name, :price, :author, presence: true
 
+  accepts_nested_attributes_for :new_product
+  accepts_nested_attributes_for :used_product
+
   ransacker :name_sin_acentos do
     Arel.sql("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')")
   end

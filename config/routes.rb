@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # --- TU PARTE (STOREFRONT) ---
-  resources :products, only: [:index, :show]
+  resources :products, only: [:index, :show, :new, :create]
   root "products#index"
   # -----------------------------
 
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/users/:id/edit', to: 'users#edit', as: :edit_user
   patch '/users/:id',  to: 'users#update'
   put '/users/:id',    to: 'users#update'
-  
+
   # Ruta para modificar rol de usuario
   patch '/users/:id/update_role', to: 'users#update_role', as: :update_user_role
 

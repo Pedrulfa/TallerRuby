@@ -1,0 +1,110 @@
+<div class="form-container" style="max-width: 800px;">
+  <h1 class="form-title">Nuevo Producto</h1>
+
+
+  <% if @product.errors.any? %>
+    <div class="form-errors">
+      <h3 class="error-title">No se pudo guardar el producto:</h3>
+      <ul class="error-list">
+        <% @product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @product, local: true, class: "user-form", multipart: true do |f| %>
+
+    <div class="form-group">
+      <%= f.label :name, "Nombre del Álbum", class: "form-label" %>
+      <%= f.text_field :name, class: "form-input", placeholder: "Ej: The Dark Side of the Moon" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :author, "Artista / Banda", class: "form-label" %>
+      <%= f.text_field :author, class: "form-input", placeholder: "Ej: Pink Floyd" %>
+    </div>
+
+    <div class="grid-2-cols" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div class="form-group">
+        <%= f.label :category, "Género", class: "form-label" %>
+        <%= f.select :category, ["Rock", "Pop", "Jazz", "Metal", "Indie", "Clásica"], { prompt: "Selecciona un género" }, class: "form-input" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :type, "Formato", class: "form-label" %>
+        <%= f.select :type, ["Vinilo", "CD"], { prompt: "Selecciona formato" }, class: "form-input" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price, "Precio ($)", class: "form-label" %>
+      <%= f.number_field :price, class: "form-input", step: 0.01 %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description, "Descripción", class: "form-label" %>
+      <%= f.text_area :description, class: "form-input", rows: 4 %>
+    </div>
+
+    <div class="form-group" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem; border: 1px solid #374151;">
+      <label class="form-label" style="color: #a78bfa; margin-bottom: 1rem; display: block;">Condición del Producto</label>
+      
+      <div style="display: flex; gap: 2rem;">
+        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+          <input type="radio" name="state" value="nuevo" checked onclick="toggleProductType('nuevo')" style="accent-color: #8b5cf6;">
+          <span style="color: #d1d5db;">Nuevo (Con stock)</span>
+        </label>
+        
+        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+          <input type="radio" name="state" value="usado" onclick="toggleProductType('usado')" style="accent-color: #8b5cf6;">
+          <span style="color: #d1d5db;">Usado (Pieza única)</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="new-product-fields" class="form-group">
+      <%= f.fields_for :new_product do |np_form| %>
+        <%= np_form.label :stock, "Stock Disponible (Unidades)", class: "form-label" %>
+        <%= np_form.number_field :stock, class: "form-input", min: 0 %>
+      <% end %>
+    </div>
+
+    <div id="used-product-fields" class="form-group" style="display: none;">
+      <%= f.fields_for :used_product do |up_form| %>
+        <p style="color: #9ca3af; font-size: 0.9rem; font-style: italic; margin-bottom: 1rem;">
+          ℹ Los productos usados se registran como pieza única (Stock = 1).
+        </p>
+        
+        <%= up_form.fields_for :audio do |audio_form| %>
+          <div class="form-group" style="margin-top: 1rem;">
+            <%= audio_form.label :url, "URL del Audio (opcional)", class: "form-label" %>
+            <%= audio_form.text_field :url, class: "form-input", placeholder: "https://ejemplo.com/audio.mp3" %>
+            <small style="color: #9ca3af; font-size: 0.85rem;">Ingresa un enlace a una muestra de audio del disco</small>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="form-actions" style="margin-top: 2rem;">
+      <%= f.submit "Guardar Producto", class: "form-submit" %>
+      <%= link_to "Cancelar", products_path, class: "btn-cancel", style: "text-align: center;" %>
+    </div>
+
+  <% end %>
+</div>
+
+<script>
+  function toggleProductType(type) {
+    const newFields = document.getElementById('new-product-fields');
+    const usedFields = document.getElementById('used-product-fields');
+
+    if (type === 'nuevo') {
+      newFields.style.display = 'block';
+      usedFields.style.display = 'none';
+    } else {
+      newFields.style.display = 'none';
+      usedFields.style.display = 'block';
+    }
+  }
+</script>
