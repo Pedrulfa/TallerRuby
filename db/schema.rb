@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_20_211648) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_21_015502) do
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_211648) do
   create_table "products", force: :cascade do |t|
     t.string "author"
     t.string "category"
+    t.integer "cover_image_id"
     t.datetime "created_at", null: false
     t.datetime "date_removed"
     t.string "description"
@@ -62,6 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_211648) do
     t.string "type"
     t.datetime "updated_at", null: false
     t.datetime "upload_date"
+    t.index ["cover_image_id"], name: "index_products_on_cover_image_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -112,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_211648) do
   add_foreign_key "has_permissions", "roles"
   add_foreign_key "images", "products"
   add_foreign_key "new_products", "products"
+  add_foreign_key "products", "images", column: "cover_image_id"
   add_foreign_key "sale_products", "products"
   add_foreign_key "sale_products", "sales"
   add_foreign_key "used_products", "products"

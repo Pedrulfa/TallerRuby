@@ -9,6 +9,7 @@ class Product < ApplicationRecord
 
   accepts_nested_attributes_for :new_product
   accepts_nested_attributes_for :used_product
+  accepts_nested_attributes_for :images, allow_destroy: true, reject_if: :all_blank
 
   ransacker :name_sin_acentos do
     Arel.sql("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(name), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')")
@@ -23,7 +24,7 @@ class Product < ApplicationRecord
   end
 
   def cover_image
-    images.first
+    cover_image_id ? images.find_by(id: cover_image_id) : images.first
   end
 
   def current_stock

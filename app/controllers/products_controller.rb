@@ -12,11 +12,11 @@ class ProductsController < ApplicationController
   end
   def new
     @product = Product.new
-    # Inicializa ambos para los campos anidados
     @product.build_new_product 
     @product.build_used_product
     # Inicializa un audio vacío opcional para el formulario
     @product.used_product.build_audio
+    @product.images.build
   end
 
   def create
@@ -24,12 +24,19 @@ class ProductsController < ApplicationController
     
     # Lógica para limpiar asociaciones vacías según el estado seleccionado
     if params[:state] == 'nuevo'
-      @product.used_product = nil # Descartamos la parte de usado
+      @product.used_product = nil 
     else
-      @product.new_product = nil  # Descartamos la parte de nuevo
+      @product.new_product = nil
     end
 
     if @product.save
+      # Si se seleccionó una imagen como portada, actualizar cover_image_id
+      if params[:cover_image_index].present?
+        cover_index = params[:cover_image_index].to_i
+        if @product.images[cover_index]
+          @product.update(cover_image_id: @product.images[cover_index].id)
+        end
+      end
       redirect_to products_path, notice: 'Producto creado exitosamente.'
     else
       render :new
@@ -45,7 +52,8 @@ class ProductsController < ApplicationController
       used_product_attributes: [
         :id, 
         audio_attributes: [:id, :url, :_destroy]
-      ]
+      ],
+      images_attributes: [:id, :url, :_destroy]
     )
   end
 end

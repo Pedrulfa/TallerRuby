@@ -48,6 +48,38 @@
     </div>
 
     <div class="form-group" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem; border: 1px solid #374151;">
+      <label class="form-label" style="color: #a78bfa; margin-bottom: 1rem; display: block;">Imágenes del Producto (opcional)</label>
+      
+      <div id="images-container">
+        <%= f.fields_for :images do |image_form| %>
+          <div class="image-field" style="margin-bottom: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 0.375rem;">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <div style="flex: 1;">
+                <%= image_form.label :url, "URL de la Imagen", class: "form-label", style: "font-size: 0.9rem; margin-bottom: 0.5rem;" %>
+                <%= image_form.text_field :url, class: "form-input", placeholder: "https://ejemplo.com/imagen.jpg", style: "margin-top: 0;" %>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+                <input type="radio" name="cover_image_index" value="0" style="accent-color: #8b5cf6;">
+                <label style="color: #d1d5db; font-size: 0.9rem; white-space: nowrap;">Usar como portada</label>
+              </div>
+              <button type="button" onclick="removeImageField(this)" class="remove-image-btn" style="margin-top: 1.5rem; padding: 0.5rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem;">
+                ✕
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <button type="button" onclick="addImageField()" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #6d28d9; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem;">
+        + Agregar otra imagen
+      </button>
+      
+      <small style="color: #9ca3af; font-size: 0.85rem; display: block; margin-top: 0.75rem;">
+        Puedes agregar múltiples imágenes. Marca una como portada para que aparezca en el listado.
+      </small>
+    </div>
+
+    <div class="form-group" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem; border: 1px solid #374151;">
       <label class="form-label" style="color: #a78bfa; margin-bottom: 1rem; display: block;">Condición del Producto</label>
       
       <div style="display: flex; gap: 2rem;">
@@ -95,6 +127,8 @@
 </div>
 
 <script>
+  let imageFieldCount = 1;
+  
   function toggleProductType(type) {
     const newFields = document.getElementById('new-product-fields');
     const usedFields = document.getElementById('used-product-fields');
@@ -107,4 +141,61 @@
       usedFields.style.display = 'block';
     }
   }
+  
+  function addImageField() {
+    const container = document.getElementById('images-container');
+    const newField = `
+      <div class="image-field" style="margin-bottom: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 0.375rem;">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <div style="flex: 1;">
+            <label class="form-label" style="font-size: 0.9rem; margin-bottom: 0.5rem;">URL de la Imagen</label>
+            <input type="text" name="product[images_attributes][${imageFieldCount}][url]" class="form-input" placeholder="https://ejemplo.com/imagen.jpg" style="margin-top: 0;">
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+            <input type="radio" name="cover_image_index" value="${imageFieldCount}" style="accent-color: #8b5cf6;">
+            <label style="color: #d1d5db; font-size: 0.9rem; white-space: nowrap;">Usar como portada</label>
+          </div>
+          <button type="button" onclick="removeImageField(this)" class="remove-image-btn" style="margin-top: 1.5rem; padding: 0.5rem; background: #dc2626; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.9rem;">
+            ✕
+          </button>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', newField);
+    imageFieldCount++;
+    updateRemoveButtons();
+  }
+  
+  function removeImageField(button) {
+    const container = document.getElementById('images-container');
+    const imageFields = container.querySelectorAll('.image-field');
+    
+    // Solo permitir eliminar si hay más de 1 campo
+    if (imageFields.length > 1) {
+      button.closest('.image-field').remove();
+      updateRemoveButtons();
+    }
+  }
+  
+  function updateRemoveButtons() {
+    const container = document.getElementById('images-container');
+    const imageFields = container.querySelectorAll('.image-field');
+    const removeButtons = container.querySelectorAll('.remove-image-btn');
+    
+    // Deshabilitar botones si solo queda 1 campo
+    removeButtons.forEach(btn => {
+      if (imageFields.length <= 1) {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }
+    });
+  }
+  
+  // Ejecutar al cargar la página
+  document.addEventListener('DOMContentLoaded', updateRemoveButtons);
 </script>
