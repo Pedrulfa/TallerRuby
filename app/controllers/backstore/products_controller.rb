@@ -1,5 +1,6 @@
 module Backstore
     class ProductsController < ApplicationController
+        before_action :require_login
         def index
             @q = Product.ransack(params[:q])
             
