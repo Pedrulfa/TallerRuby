@@ -53,6 +53,21 @@
                 🎵 <span>Productos</span>
               <% end %>
             </li>
+             <li>
+              <%= link_to new_backstore_sale_path, class: "sidebar-link" do %>
+                ➕ <span>Nueva Venta</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to backstore_sales_path, class: "sidebar-link" do %>
+                💰 <span>Ventas</span>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to backstore_reports_path, class: "sidebar-link" do %>
+                📊 <span>Reportes</span>
+              <% end %>
+            </li>
             
             <%# Solo mostrar Gestión de Usuarios si tiene el permiso modify_role %>
             <% if can?("modify_role") %>
@@ -62,6 +77,7 @@
                 <% end %>
               </li>
             <% end %>
+
           </ul>
         </div>
       </aside>
