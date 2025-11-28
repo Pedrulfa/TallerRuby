@@ -30,4 +30,23 @@ class Product < ApplicationRecord
   def current_stock
     new_product&.stock || 1
   end
+
+
+  def decrement_stock!(qty)
+    if new_product
+      new_product.update!(stock: new_product.stock - qty)
+    elsif used_product
+      # Lógica para productos usados
+      used_product.update!(sold: true)
+    end
+  end
+
+  def increment_stock!(qty)
+    if new_product
+      new_product.update!(stock: new_product.stock + qty)
+    elsif used_product
+      used_product.update!(sold: false)
+    end
+  end
+
 end

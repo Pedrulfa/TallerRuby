@@ -21,4 +21,12 @@ class User < ApplicationRecord
       # Verifica si existe la relación en has_permissions
       HasPermission.exists?(role_id: role.id, permission_id: permission.id)
     end
+
+    def self.ransackable_attributes(auth_object = nil)
+      ["name", "surname", "email"]
+    end
+
+    def self.ransackable_associations(auth_object = nil)
+      []
+    end
 end
