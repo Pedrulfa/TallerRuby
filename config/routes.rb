@@ -27,7 +27,11 @@ Rails.application.routes.draw do
 
   #BACKSTORE
   namespace :backstore do
+    get 'reports', to: 'reports#index'
     resources :products
+    resources :sales do
+      get :invoice, on: :member
+    end
     root "products#index"
   end
 end

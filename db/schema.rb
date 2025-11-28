@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_21_015502) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_28_030406) do
   create_table "audios", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
     t.integer "used_product_id", null: false
     t.index ["used_product_id"], name: "index_audios_on_used_product_id"
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "dni"
+    t.string "name"
+    t.string "surname"
+    t.datetime "updated_at", null: false
+    t.index ["dni"], name: "index_clients_on_dni", unique: true
   end
 
   create_table "has_permissions", force: :cascade do |t|
@@ -63,6 +72,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_21_015502) do
     t.string "type"
     t.datetime "updated_at", null: false
     t.datetime "upload_date"
+    t.integer "year"
     t.index ["cover_image_id"], name: "index_products_on_cover_image_id"
   end
 
@@ -84,11 +94,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_21_015502) do
   end
 
   create_table "sales", force: :cascade do |t|
+    t.datetime "cancelled_at"
+    t.integer "client_id", null: false
     t.boolean "completed", default: true
     t.datetime "created_at", null: false
     t.datetime "date"
     t.decimal "total"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["client_id"], name: "index_sales_on_client_id"
+    t.index ["user_id"], name: "index_sales_on_user_id"
   end
 
   create_table "used_products", force: :cascade do |t|
@@ -117,6 +132,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_21_015502) do
   add_foreign_key "products", "images", column: "cover_image_id"
   add_foreign_key "sale_products", "products"
   add_foreign_key "sale_products", "sales"
+  add_foreign_key "sales", "clients"
+  add_foreign_key "sales", "users"
   add_foreign_key "used_products", "products"
   add_foreign_key "users", "roles"
 end
