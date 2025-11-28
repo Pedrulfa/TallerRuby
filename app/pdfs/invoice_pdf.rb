@@ -35,16 +35,16 @@ class InvoicePdf < Prawn::Document
     table item_rows do
       row(0).font_style = :bold
       columns(1..3).align = :right
-      self.row_colors = ["DDDDDD", "FFFFFF"]
+      self.row_colors = [ "DDDDDD", "FFFFFF" ]
       self.header = true
       self.width = 540
     end
   end
 
   def item_rows
-    [["Producto", "Cantidad", "Precio Unitario", "Subtotal"]] +
+    [ [ "Producto", "Cantidad", "Precio Unitario", "Subtotal" ] ] +
     @sale.sale_products.map do |item|
-      [item.product.name, item.quantity, price(item.price), price(item.price * item.quantity)]
+      [ item.product.name, item.quantity, price(item.price), price(item.price * item.quantity) ]
     end
   end
 

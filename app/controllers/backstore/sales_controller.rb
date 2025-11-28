@@ -23,7 +23,7 @@ module Backstore
     @sale = Sale.create_with_stock_control(sale_params.merge(user: current_user))
 
     if @sale.persisted?
-      redirect_to [:backstore, @sale], notice: 'Venta creada exitosamente.'
+      redirect_to [ :backstore, @sale ], notice: "Venta creada exitosamente."
     else
       render :new, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ module Backstore
   def destroy
     @sale = Sale.find(params[:id])
     @sale.cancel!
-    redirect_to backstore_sales_path, notice: 'Venta cancelada exitosamente.'
+    redirect_to backstore_sales_path, notice: "Venta cancelada exitosamente."
   end
 
   def invoice
@@ -44,7 +44,7 @@ module Backstore
   private
 
   def sale_params
-    params.require(:sale).permit(:total, client_attributes: [:dni, :name, :surname], sale_products_attributes: [:product_id, :quantity, :_destroy])
+    params.require(:sale).permit(:total, client_attributes: [ :dni, :name, :surname ], sale_products_attributes: [ :product_id, :quantity, :_destroy ])
   end
-end
+  end
 end

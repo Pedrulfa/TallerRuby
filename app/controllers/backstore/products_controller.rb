@@ -3,19 +3,19 @@ module Backstore
         before_action :require_login
         def index
             @q = Product.ransack(params[:q])
-            
+
             # Filtrar por estado (activos o eliminados)
-            scope = params[:scope] == 'inactive' ? Product.where.not(date_removed: nil) : Product.where(date_removed: nil)
-            
+            scope = params[:scope] == "inactive" ? Product.where.not(date_removed: nil) : Product.where(date_removed: nil)
+
             @products = @q.result(distinct: true)
                         .merge(scope)
                         .includes(:images, :new_product, :used_product)
                         .order(created_at: :desc)
                         .page(params[:page]).per(20)
-        end    
+        end
         def new
             @product = Product.new
-            @product.build_new_product 
+            @product.build_new_product
             @product.build_used_product
             # Inicializa un audio vacío opcional para el formulario
             @product.used_product.build_audio
@@ -24,10 +24,10 @@ module Backstore
 
         def create
             @product = Product.new(product_params)
-            
+
             # Lógica para limpiar asociaciones vacías según el estado seleccionado
-            if params[:state] == 'nuevo'
-                @product.used_product = nil 
+            if params[:state] == "nuevo"
+                @product.used_product = nil
             else
                 @product.new_product = nil
             end
@@ -40,10 +40,10 @@ module Backstore
                         @product.update(cover_image_id: @product.images[cover_index].id)
                     end
                 end
-                redirect_to backstore_products_path, notice: 'Producto creado exitosamente.'
-                else
+                redirect_to backstore_products_path, notice: "Producto creado exitosamente."
+            else
                     render :new
-                end
+            end
             end
 
             def edit
@@ -53,7 +53,7 @@ module Backstore
             def update
                 @product = Product.find(params[:id])
                 if @product.update(product_params)
-                    redirect_to backstore_products_path, notice: 'Producto actualizado.'
+                    redirect_to backstore_products_path, notice: "Producto actualizado."
                 else
                     render :edit
                 end
@@ -61,28 +61,28 @@ module Backstore
 
         def destroy
             @product = Product.find(params[:id])
-            
-            #setear fecha de baja
+
+            # setear fecha de baja
             @product.update(date_removed: Time.current)
-            
+
             # Si es producto nuevo, poner stock en 0
             if @product.new_product
             @product.new_product.update(stock: 0)
             end
-            
-            redirect_to backstore_products_path, notice: 'Producto dado de baja exitosamente.'
-        end   
+
+            redirect_to backstore_products_path, notice: "Producto dado de baja exitosamente."
+        end
         private
 
         def product_params
             params.require(:product).permit(
-                :name, :price, :author, :description, :category, :type, 
-                new_product_attributes: [:id, :stock],
+                :name, :price, :author, :description, :category, :type,
+                new_product_attributes: [ :id, :stock ],
                 used_product_attributes: [
-                :id, 
-                audio_attributes: [:id, :url, :_destroy]
+                :id,
+                audio_attributes: [ :id, :url, :_destroy ]
                 ],
-                images_attributes: [:id, :url, :_destroy]
+                images_attributes: [ :id, :url, :_destroy ]
             )
         end
     end

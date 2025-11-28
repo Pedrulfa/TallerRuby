@@ -26,12 +26,12 @@ end
 
 
 
-#Crear permisos
-["modify_role"].each do |perm_name|
+# Crear permisos
+[ "modify_role" ].each do |perm_name|
   Permission.find_or_create_by!(name: perm_name)
 end
 
-#Asignar permisos a roles
+# Asignar permisos a roles
 admin_role = Role.find_by(name: "ADMIN")
 modify_role_permission = Permission.find_by(name: "modify_role")
 

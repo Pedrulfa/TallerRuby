@@ -18,7 +18,7 @@ class Sale < ApplicationRecord
   # ------------------
   def self.create_with_stock_control(params)
     sale = new(params)
-    
+
     transaction do
       if sale.client.nil?
         sale.errors.add(:base, "Debe ingresar los datos del cliente")
@@ -50,14 +50,14 @@ class Sale < ApplicationRecord
       sale.sale_products.each do |item|
         item.product.decrement_stock!(item.quantity)
       end
-      
+
       sale.save!
     end
-    
-    return sale
+
+    sale
   rescue ActiveRecord::RecordInvalid => e
     sale.errors.add(:base, e.message)
-    return sale
+    sale
   end
   def cancel!
     return if cancelled_at.present?
@@ -70,10 +70,10 @@ class Sale < ApplicationRecord
     end
   end
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "cancelled_at", "total", "id"]
+    [ "created_at", "cancelled_at", "total", "id" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["user", "client"]
+    [ "user", "client" ]
   end
 end

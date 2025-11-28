@@ -48,5 +48,4 @@ class Product < ApplicationRecord
       used_product.update!(sold: false)
     end
   end
-
 end

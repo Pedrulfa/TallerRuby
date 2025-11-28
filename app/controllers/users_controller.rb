@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-  
-  before_action :require_login, only: [:show, :edit, :update, :index, :update_role]
-  before_action :set_user, only: [:edit, :update]
-  
+  before_action :require_login, only: [ :show, :edit, :update, :index, :update_role ]
+  before_action :set_user, only: [ :edit, :update ]
+
   # Verificar permiso para gestionar usuarios
-  before_action only: [:index, :update_role] do
+  before_action only: [ :index, :update_role ] do
     authorize_permission!("modify_role")
   end
 
@@ -19,10 +18,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    
-    # role_id por defecto 
+
+    # role_id por defecto
     @user.role_id ||= 4
-    
+
     if @user.save
       redirect_to login_path, notice: "Usuario registrado correctamente"
     else
@@ -43,7 +42,7 @@ class UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
-    
+
     if @user.update(user_update_params)
       redirect_to profile_path, notice: "Perfil actualizado exitosamente"
     else
@@ -54,13 +53,13 @@ class UsersController < ApplicationController
   # Nueva acción para modificar el rol de un usuario
   def update_role
     @user = User.find(params[:id])
-    
+
     # Validar que no se intente modificar el rol de un ADMIN
     if @user.role.name == "ADMIN"
       redirect_to users_path, alert: "No se puede modificar el rol de un administrador"
       return
     end
-    
+
     if @user.update(role_id: params[:role_id])
       redirect_to users_path, notice: "Rol actualizado correctamente"
     else
