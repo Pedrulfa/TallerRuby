@@ -5,7 +5,7 @@ module Backstore
             @q = Product.ransack(params[:q])
 
             # Filtrar por estado (activos o eliminados)
-            scope = params[:scope] == "inactive" ? Product.where.not(date_removed: nil) : Product.where(date_removed: nil)
+            scope = params[:scope] == 'inactive' ? Product.where.not(date_removed: nil) : Product.where(date_removed: nil)
 
             @products = @q.result(distinct: true)
                         .merge(scope)
@@ -26,7 +26,7 @@ module Backstore
             @product = Product.new(product_params)
 
             # Lógica para limpiar asociaciones vacías según el estado seleccionado
-            if params[:state] == "nuevo"
+            if params[:state] == 'nuevo'
                 @product.used_product = nil
             else
                 @product.new_product = nil
@@ -40,7 +40,7 @@ module Backstore
                         @product.update(cover_image_id: @product.images[cover_index].id)
                     end
                 end
-                redirect_to backstore_products_path, notice: "Producto creado exitosamente."
+                redirect_to backstore_products_path, notice: 'Producto creado exitosamente.'
             else
                     render :new
             end
