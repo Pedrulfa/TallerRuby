@@ -19,6 +19,11 @@
     </div>
 
     <div class="form-group">
+      <%= f.label :role_id, "Rol de Usuario", class: "form-label" %>
+      <%= f.collection_select :role_id, Role.all, :id, :name, { prompt: "Selecciona un rol" }, class: "form-select" %>
+    </div>
+    
+    <div class="form-group">
       <%= f.label :password, "Contraseña", class: "form-label" %>
       <%= f.password_field :password, class: "form-input", placeholder: "Mínimo 6 caracteres" %>
     </div>

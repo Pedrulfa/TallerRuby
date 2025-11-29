@@ -118,7 +118,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_28_030406) do
     t.string "email"
     t.string "name"
     t.string "password_digest"
-    t.integer "role_id", null: false
+    t.integer "role_id"
     t.string "surname"
     t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_users_on_role_id"

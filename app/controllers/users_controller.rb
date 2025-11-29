@@ -1,10 +1,11 @@
 class UsersController < ApplicationController 
   before_action :require_login
   before_action :set_user, only: [:edit, :update]
-  
-  # Verificar permiso para gestionar usuarios
-  before_action only: [ :index, :update_role ] do
+  before_action only: [ :index, :update_role ] do   # Verificar permiso para gestionar usuarios
     authorize_permission!("modify_role")
+  end
+  before_action only: [:create, :new] do
+    authorize_permission!("create_user")
   end
 
   # Listado de usuarios (solo para quien tenga permiso modify_role)
@@ -19,11 +20,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    # role_id por defecto
-    @user.role_id ||= 4
-
     if @user.save
-      redirect_to login_path, notice: "Usuario registrado correctamente"
+      redirect_to users_list_path, notice: "Usuario registrado correctamente"
     else
       render :new, status: :unprocessable_entity
     end
@@ -70,7 +68,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :surname, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :surname, :email, :role_id,:password, :password_confirmation)
   end
 
   # Parámetros permitidos al actualizar solo el admin puede modificar el role

@@ -27,17 +27,17 @@ end
 
 
 # Crear permisos
-[ "modify_role" ].each do |perm_name|
+[ "modify_role", "create_user" ].each do |perm_name|
   Permission.find_or_create_by!(name: perm_name)
 end
 
 # Asignar permisos a roles
 admin_role = Role.find_by(name: "ADMIN")
 modify_role_permission = Permission.find_by(name: "modify_role")
+create_user_permission = Permission.find_by(name: "create_user")
 
 HasPermission.find_or_create_by!(role_id: admin_role.id, permission_id: modify_role_permission.id)
-
-
+HasPermission.find_or_create_by!(role_id: admin_role.id, permission_id: create_user_permission.id)
 
 puts "Creando productos de prueba..."
 
