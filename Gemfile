@@ -69,3 +69,6 @@ end
 
 gem "ransack"   # Para los filtros de búsqueda potentes
 gem "kaminari" # Para la paginación (que no carguen 1000 discos de golpe)
+
+gem "prawn", "~> 2.5"
+gem "prawn-table", "~> 0.2.2"

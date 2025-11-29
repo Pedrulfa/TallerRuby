@@ -1,9 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  date: 2025-11-16 18:25:18
   total: 9.99
+  date: 2025-11-16 18:32:04
+  client: one
+  user: one
 
 two:
-  date: 2025-11-16 18:25:18
   total: 9.99
+  date: 2025-11-16 18:32:04
+  client: two
+  user: two

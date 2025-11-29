@@ -30,5 +30,4 @@ class ApplicationController < ActionController::Base
       redirect_to login_path, alert: "Debes iniciar sesión primero"
     end
   end
-
 end

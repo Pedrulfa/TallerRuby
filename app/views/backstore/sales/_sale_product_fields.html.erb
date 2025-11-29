@@ -1,0 +1,28 @@
+<div class="nested-fields product-item" data-new-record="<%= f.object.new_record? %>">
+  <div class="form-group product-select">
+    <%= f.label :product_id, "Producto", class: "form-label" %>
+    <%= f.select :product_id, 
+        Product.all.map { |p| [p.name, p.id, { 'data-stock' => p.current_stock }] },
+        { prompt: "Seleccione un producto" }, 
+        { class: "form-select", data: { action: "change->sales#updateStock" } } 
+    %>
+    <span class="stock-info text-muted" style="font-size: 0.8em; margin-top: 4px; display: block;"></span>
+  </div>
+
+  <div class="form-group quantity-input">
+    <%= f.label :quantity, "Cant.", class: "form-label" %>
+    <%= f.number_field :quantity, class: "form-input text-center #{'is-invalid' if f.object.errors[:quantity].any?}", data: { action: "input->sales#validateQuantity" } %>
+    <% if f.object.errors[:quantity].any? %>
+      <div class="error-message"><%= f.object.errors[:quantity].join(', ') %></div>
+    <% end %>
+  </div>
+
+  <!-- Botón para eliminar este producto específico -->
+  <div class="form-group remove-btn-container">
+    <button type="button" data-action="nested-form#remove" class="btn-remove">
+      &times;
+    </button>
+    <!-- Campo oculto necesario para borrar en Rails -->
+    <%= f.hidden_field :_destroy %>
+  </div>
+</div>
