@@ -31,7 +31,6 @@
             <%= link_to "Sign Out", logout_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "¿Estás seguro que quieres cerrar sesión?" }, class: "btn-neon-pink" %>
           <% else %>
             <%= link_to "Login", login_path, class: "btn-neon-pink" %>
-            <%= link_to "Sign Up", new_user_path, class: "btn-neon-cyan" %>
           <% end %>
         </div>
 
