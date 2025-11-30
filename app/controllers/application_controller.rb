@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :logged_in?, :can?
 
+  before_action :check_password_change_required
+
   def current_user
     @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
@@ -28,6 +30,20 @@ class ApplicationController < ActionController::Base
   def require_login
     unless logged_in?
       redirect_to login_path, alert: "Debes iniciar sesión primero"
+    end
+  end
+
+  private
+
+  # Verificar si el usuario debe cambiar su contraseña
+  def check_password_change_required
+    return unless logged_in?
+    return if controller_name == 'sessions' # Permitir logout
+    return if controller_name == 'users' && action_name == 'change_password' # Permitir ver formulario
+    return if controller_name == 'users' && action_name == 'update_password' # Permitir actualización
+
+    if current_user.must_change_password
+      redirect_to change_password_path, alert: "⚠️ Debes cambiar tu contraseña antes de continuar"
     end
   end
 end

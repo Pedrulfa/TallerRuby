@@ -9,6 +9,11 @@ class User < ApplicationRecord
     validates :name, presence: { message: "No puede estar vacío" }
     validates :surname, presence: { message: "No puede estar vacío" }
 
+    DEFAULT_PASSWORD = "123456"
+
+    # Asignar contraseña por defecto al crear usuario
+    before_validation :set_default_password, on: :create
+
     # Sistema de permisos
     # Verifica si el usuario tiene un permiso específico
     def can?(permission_name)
@@ -28,5 +33,14 @@ class User < ApplicationRecord
 
     def self.ransackable_associations(auth_object = nil)
       []
+    end
+
+    private
+
+    def set_default_password
+      # Siempre asignar la contraseña por defecto al crear
+      self.password = DEFAULT_PASSWORD
+      self.password_confirmation = DEFAULT_PASSWORD
+      self.must_change_password = true
     end
 end

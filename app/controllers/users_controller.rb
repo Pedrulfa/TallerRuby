@@ -8,6 +8,8 @@ class UsersController < ApplicationController
     authorize_permission!("create_user")
   end
 
+  skip_before_action :check_password_change_required, only: [:change_password, :update_password]
+
   # Listado de usuarios (solo para quien tenga permiso modify_role)
   def index
     @users = User.includes(:role).all
@@ -62,6 +64,38 @@ class UsersController < ApplicationController
       redirect_to users_path, notice: "Rol actualizado correctamente"
     else
       redirect_to users_path, alert: "Error al actualizar el rol"
+    end
+  end
+
+  # Formulario para cambiar contraseña obligatoria
+  def change_password
+    @user = current_user
+  end
+
+  # Actualizar contraseña obligatoria
+  def update_password
+    @user = current_user
+
+    if params[:user][:password].blank?
+      @user.errors.add(:password, "no puede estar vacío")
+      render :change_password, status: :unprocessable_entity
+      return
+    end
+
+    if params[:user][:password] == User::DEFAULT_PASSWORD
+      @user.errors.add(:password, "no puede ser la contraseña por defecto (#{User::DEFAULT_PASSWORD})")
+      render :change_password, status: :unprocessable_entity
+      return
+    end
+
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password_confirmation]
+    @user.must_change_password = false
+
+    if @user.save
+      redirect_to root_path, notice: "✅ Contraseña actualizada exitosamente"
+    else
+      render :change_password, status: :unprocessable_entity
     end
   end
 

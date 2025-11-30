@@ -25,6 +25,10 @@ Rails.application.routes.draw do
 
   get "/profile", to: "users#show", as: :profile
 
+  # Rutas para cambio de contraseña obligatorio
+  get "change-password", to: "users#change_password", as: :change_password
+  patch "update-password", to: "users#update_password", as: :update_password
+
   # BACKSTORE
   namespace :backstore do
     get "reports", to: "reports#index"
