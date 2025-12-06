@@ -54,9 +54,9 @@ class UsersController < ApplicationController
   def update_role
     @user = User.find(params[:id])
 
-    # Validar que no se intente modificar el rol de un ADMIN
-    if @user.role.name == "ADMIN"
-      redirect_to users_path, alert: "No se puede modificar el rol de un administrador"
+    # Prevenir que un usuario cambie su propio rol
+    if @user == current_user
+      redirect_to users_path, alert: "No puedes modificar tu propio rol"
       return
     end
 
@@ -96,6 +96,23 @@ class UsersController < ApplicationController
       redirect_to root_path, notice: "✅ Contraseña actualizada exitosamente"
     else
       render :change_password, status: :unprocessable_entity
+    end
+  end
+
+  # Eliminar un usuario
+  def destroy
+    @user = User.find(params[:id])
+    
+    # Prevenir que se elimine a sí mismo
+    if @user == current_user
+      redirect_to users_path, alert: "No puedes eliminarte a ti mismo"
+      return
+    end
+    
+    if @user.destroy
+      redirect_to users_path, notice: "Usuario eliminado correctamente"
+    else
+      redirect_to users_path, alert: "Error al eliminar el usuario"
     end
   end
 

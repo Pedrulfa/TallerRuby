@@ -29,19 +29,25 @@
               </span>
             </td>
             <td>
-              <%# No permitir modificar el rol de otros ADMIN %>
-              <% if user.role.name == "ADMIN" %>
-                <span class="text-gray-400 text-sm">
-                  🔒 No modificable
+              <% if user == current_user %>
+                <span class="text-gray-500 italic">
+                  👤 Tú 
                 </span>
               <% else %>
-                <%= form_with url: update_user_role_path(user), method: :patch, local: true, class: "role-form" do |f| %>
-                  <%= f.select :role_id, 
-                      Role.all.map { |r| [r.name, r.id] }, 
-                      { selected: user.role_id },
-                      class: "role-select" %>
-                  <%= f.submit "Actualizar Rol", class: "btn-update-role" %>
-                <% end %>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <%= form_with url: update_user_role_path(user), method: :patch, local: true, class: "role-form", style: "display: flex; gap: 0.5rem; align-items: center;" do |f| %>
+                    <%= f.select :role_id, 
+                        Role.all.map { |r| [r.name, r.id] }, 
+                        { selected: user.role_id },
+                        class: "role-select" %>
+                    <%= f.submit "Actualizar Rol", class: "btn-update-role" %>
+                  <% end %>
+                  
+                  <%= button_to "Eliminar", user_path(user), 
+                      method: :delete, 
+                      data: { turbo_confirm: "¿Estás seguro de eliminar a #{user.name} #{user.surname}?" },
+                      class: "btn-update-role" %>
+                </div>
               <% end %>
             </td>
           </tr>

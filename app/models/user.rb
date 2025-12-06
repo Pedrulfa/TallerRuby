@@ -38,7 +38,6 @@ class User < ApplicationRecord
     private
 
     def set_default_password
-      # Siempre asignar la contraseña por defecto al crear
       self.password = DEFAULT_PASSWORD
       self.password_confirmation = DEFAULT_PASSWORD
       self.must_change_password = true

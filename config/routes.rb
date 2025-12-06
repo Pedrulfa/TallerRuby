@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/users/:id/edit", to: "users#edit", as: :edit_user
   patch "/users/:id",  to: "users#update"
   put "/users/:id",    to: "users#update"
+  delete "/users/:id", to: "users#destroy"
 
   # Ruta para modificar rol de usuario
   patch "/users/:id/update_role", to: "users#update_role", as: :update_user_role
