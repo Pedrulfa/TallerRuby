@@ -1,4 +1,4 @@
 class Image < ApplicationRecord
   belongs_to :product
-  validates :url, presence: true
+  has_one_attached :file
 end

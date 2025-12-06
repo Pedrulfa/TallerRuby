@@ -60,8 +60,8 @@
           <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
             <td style="padding: 1rem; color: #d1d5db;"><%= product.id %></td>
             <td style="padding: 1rem;">
-              <% if product.cover_image %>
-                <%= image_tag product.cover_image.url, style: "width: 50px; height: 50px; object-fit: cover; border-radius: 0.25rem; border: 2px solid #8b5cf6;" %>
+              <% if product.cover_image&.file&.attached? %>
+                <%= image_tag product.cover_image.file, style: "width: 50px; height: 50px; object-fit: cover; border-radius: 0.25rem; border: 2px solid #8b5cf6;" %>
               <% else %>
                 <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 0.75rem;">
                   Sin img

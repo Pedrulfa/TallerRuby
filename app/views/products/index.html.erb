@@ -20,8 +20,8 @@
 <div class="products-grid">
   <% @products.each do |product| %>
     <div class="product-card">
-      <% if product.cover_image %>
-        <%= image_tag product.cover_image.url %> 
+      <% if product.cover_image&.file&.attached? %>
+        <%= image_tag product.cover_image.file %>
       <% end %>
       
       <h3><%= product.name %></h3>

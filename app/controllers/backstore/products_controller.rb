@@ -101,9 +101,9 @@ module Backstore
                 new_product_attributes: [ :id, :stock ],
                 used_product_attributes: [
                 :id,
-                audio_attributes: [ :id, :url, :_destroy ]
+                audio_attributes: [ :id, :file, :_destroy ]
                 ],
-                images_attributes: [ :id, :url, :_destroy ]
+                images_attributes: [ :id, :file, :_destroy ]
             )
         end
     end
