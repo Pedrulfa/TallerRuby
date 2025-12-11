@@ -51,7 +51,7 @@
           <% end %>
         </div>
 
-        <!-- Plantilla Oculta (La magia ocurre aquí) -->
+        <!-- Plantilla Oculta -->
         <template data-nested-form-target="template">
           <%= form.fields_for :sale_products, SaleProduct.new, child_index: 'NEW_RECORD' do |sale_product_form| %>
             <%= render "sale_product_fields", f: sale_product_form %>
@@ -176,12 +176,15 @@
     color: #0f172a;
     transition: border-color 0.2s;
     box-sizing: border-box; /* Important for padding */
+    background-color: #ffffff;
   }
 
   .form-input:focus, .form-select:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background-color: #ffffff;
+    color: #0f172a;
   }
 
   /* Product Item */
