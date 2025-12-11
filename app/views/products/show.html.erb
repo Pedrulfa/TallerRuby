@@ -4,13 +4,18 @@
   <p class="category">Categoría: <%= @product.category %> | Tipo: <%= @product.type %></p>
 
   <div class="product-images">
-    <% if @product.images.any? %>
+    <% if @product.cover_image&.file&.attached? %>
       <div class="main-image">
-        <%= image_tag @product.images.first.url, style: "max-width: 400px;" %>
+        <%= image_tag @product.cover_image.file, style: "max-width: 400px;" %>
       </div>
+    <% end %>
+    
+    <% if @product.images.any? %>
       <div class="thumbnails">
         <% @product.images.each do |img| %>
-          <%= image_tag img.url, style: "max-width: 100px;" %>
+          <% if img.file&.attached? %>
+            <%= image_tag img.file, style: "max-width: 100px; margin: 5px;" %>
+          <% end %>
         <% end %>
       </div>
     <% end %>
